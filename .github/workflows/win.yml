@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
   push:
-    # Pushes to the canary or private-ci branches run their own workflows.
+    # Pushes to the canary or private-ci branches run their own workflows..
     branches-ignore:
       - public-canary
       - private-canary
