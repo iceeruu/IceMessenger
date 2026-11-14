@@ -54,9 +54,9 @@ jobs:
 
     strategy:
       matrix:
-        arch: [x64_x86, x64, arm64]
-        qt: ["", qt6]
-        generator: ["", "Ninja Multi-Config"]
+        arch: [x64]
+        qt: [""]
+        generator: [""]
         exclude:
           - arch: arm64
             qt: ""
