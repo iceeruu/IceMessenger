@@ -5,7 +5,6 @@ on:
   workflow_dispatch:
 
   push:
-    # Pushes to the canary or private-ci branches run their own workflows..
     branches-ignore:
       - public-canary
       - private-canary
@@ -130,6 +129,30 @@ jobs:
         run: |
           nuget sources Disable -Name "Microsoft Visual Studio Offline Packages"
           nuget sources Add -Source https://api.nuget.org/v3/index.json & exit 0
+
+      - name: Clean runner disk.
+        shell: pwsh
+        run: |
+          Write-Host "Disk space before cleanup:"
+          Get-PSDrive C
+
+          $paths = @(
+            "C:\Android",
+            "C:\Program Files\Android",
+            "C:\hostedtoolcache\windows\go",
+            "C:\hostedtoolcache\windows\Ruby",
+            "C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk"
+          )
+
+          foreach ($path in $paths) {
+            if (Test-Path $path) {
+              Write-Host "Removing $path"
+              Remove-Item -LiteralPath $path -Recurse -Force -ErrorAction SilentlyContinue
+            }
+          }
+
+          Write-Host "Disk space after cleanup:"
+          Get-PSDrive C
 
       - name: ThirdParty cache.
         id: cache-third-party
